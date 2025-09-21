@@ -51,17 +51,17 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="RAG API", lifespan=lifespan)
 
 # CORS middleware for frontend communication
+# This new configuration allows your deployed frontend to communicate with your backend.
+origins = [
+    # The URL of your deployed frontend will be set as an environment variable.
+    os.getenv("CLIENT_ORIGIN_URL"), 
+    # Add localhost for local development (Next.js default port is 3000)
+    "http://localhost:3000",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "null", 
-        "http://localhost",
-        "http://localhost:8000",
-        "http://127.0.0.1:8000",
-        "http://127.0.0.1:8080", 
-        "http://localhost:8080",
-        "http://localhost:8081",
-    ],
+    allow_origins=[origin for origin in origins if origin], # Filter out None values
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -71,4 +71,5 @@ app.include_router(endpoints.router)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="localhost", port=8000, reload=True)
+
 
