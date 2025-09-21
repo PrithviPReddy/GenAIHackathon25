@@ -9,7 +9,7 @@
       }
     },
     {
-      "src": "server/api/index.py",
+      "src": "server/api/*.py",
       "use": "@vercel/python"
     }
   ],
