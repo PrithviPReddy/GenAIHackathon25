@@ -2,14 +2,11 @@
   "version": 2,
   "builds": [
     {
-      "src": "client/package.json",
-      "use": "@vercel/next",
-      "config": {
-        "installCommand": "npm install"
-      }
+      "src": "client/next.config.js",
+      "use": "@vercel/next"
     },
     {
-      "src": "server/api/*.py",
+      "src": "server/api/index.py",
       "use": "@vercel/python"
     }
   ],
