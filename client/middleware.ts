@@ -1,17 +1,14 @@
-import {  authMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+import { authMiddleware } from '@clerk/nextjs/server';
 
-const isPublicRoute = createRouteMatcher([
-  '/',
-  '/login(.*)',
-  '/signup(.*)',
-  '/login/sso-callback(.*)',
-  '/signup/sso-callback(.*)'
-]);
-
-export default clerkMiddleware((auth, req) => {
-  if (!isPublicRoute(req)) {
-    auth.protect();
-  }
+export default authMiddleware({
+  // Add all public routes (routes that don't require authentication) here
+  publicRoutes: [
+    '/',
+    '/login(.*)',
+    '/signup(.*)',
+    '/login/sso-callback(.*)',
+    '/signup/sso-callback(.*)'
+  ],
 });
 
 export const config = {
@@ -21,5 +18,6 @@ export const config = {
     // Always run for API routes
     '/(api|trpc)(.*)',
   ],
+  // This line forces the middleware to run on the Node.js runtime
   runtime: 'nodejs',
 };
