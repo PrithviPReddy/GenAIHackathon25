@@ -7,7 +7,7 @@ python-dotenv
 langchain
 langchain-community
 pypdf
-pinecone-client
+pinecone
 sentence-transformers
 transformers
 numpy
