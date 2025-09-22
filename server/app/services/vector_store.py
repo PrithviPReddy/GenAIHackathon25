@@ -17,7 +17,7 @@ class EnhancedHybridVectorStore:
         """Primary Pinecone search with document filtering."""
         try:
             # Use the instance's embedding model
-            query_embedding = self.embedding_model.encode([query])[0].tolist()
+            query_embedding = self.embedding_model.encode([query])[0]
             
             results = self.pinecone_index.query(
                 vector=query_embedding,
@@ -65,4 +65,5 @@ class EnhancedHybridVectorStore:
         except Exception as e:
             logger.error(f" Failed to add to Pinecone fallback: {e}")
             # Re-raise the exception to be caught by the endpoint
+
             raise e
