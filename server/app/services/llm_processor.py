@@ -258,5 +258,3 @@ Please answer each question based only on the provided context chunks. Look for 
             answers.append("Unable to process this question due to response parsing issues.")
         
         return answers[:len(questions)]
-
-
