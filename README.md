@@ -58,62 +58,73 @@ cd your-repo-name
 Backend Setup (/server)
 Navigate to the server directory:
 
-Bash
+```bash
 
 cd server
 Create and activate a virtual environment:
-
-Bash
+```
+```Bash
 
 python -m venv venv
 source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+```
 Install Python dependencies:
-
+```
 Bash
 
 pip install -r requirements.txt
+```
 Create an environment file:
 Create a file named .env in the server directory and add your API keys:
 
 Code snippet
 
 # server/.env
+```
 PINECONE_API_KEY="YOUR_PINECONE_API_KEY"
 PINECONE_INDEX="your-pinecone-index-name"
 GEMINI_API_KEY="YOUR_GEMINI_API_KEY"
 OPENAI_API_KEY="YOUR_OPENAI_API_KEY"
 CLIENT_ORIGIN_URL="http://localhost:3000"
+```
 Run the backend server:
 
 Bash
-
+```
 uvicorn main:app --reload
+```
 The backend will now be running on http://localhost:8000.
 
 Frontend Setup (/client)
 Navigate to the client directory (from the root):
 
 Bash
-
+```
 cd client
+```
 Install npm dependencies:
 
 Bash
-
+```
 npm install
+```
 Create an environment file:
 Create a file named .env.local in the client directory and add your keys:
 
 Code snippet
 
 # client/.env.local
+
+```
 NEXT_PUBLIC_API_BASE_URL="http://localhost:8000"
 
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="YOUR_CLERK_PUBLISHABLE_KEY"
 CLERK_SECRET_KEY="YOUR_CLERK_SECRET_KEY"
+```
 Run the frontend server:
 
 Bash
-
+```
 npm run dev
+```
 The frontend will now be running on http://localhost:3000.
