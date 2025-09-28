@@ -8,15 +8,13 @@ import time
 class ImprovedLLMProcessor:
     """Enhanced LLM processor with better prompting and context handling"""
 
-    # In app/services/llm_processor.py
     def analyze_text_for_risks(self, text: str) -> list:
         """
         Analyzes text for a predefined checklist of financial and legal risks
         using a single API call.
         """
         logger.info("Starting single-call risk analysis...")
-
-        # A new, comprehensive prompt for a single API call
+l
         single_call_prompt = f"""
 You are an expert legal document analyst. Your task is to analyze the provided document text and identify any clauses that fall into the specific risk categories listed below.
 
@@ -57,12 +55,10 @@ You are an expert legal document analyst. Your task is to analyze the provided d
             model = genai.GenerativeModel(self.model_name)
             response = model.generate_content(single_call_prompt)
 
-            # Extract JSON from the response, supporting markdown code blocks
             json_str_match = re.search(r'```json\s*(\{.*?\})\s*```', response.text, re.DOTALL)
             if json_str_match:
                 json_str = json_str_match.group(1)
             else:
-                # Fallback for plain JSON
                 json_start = response.text.find("{")
                 json_end = response.text.rfind("}") + 1
                 if json_start != -1 and json_end != -1:
@@ -72,19 +68,18 @@ You are an expert legal document analyst. Your task is to analyze the provided d
 
             parsed_response = json.loads(json_str)
             
-            # Validate the structure of the parsed response
             if isinstance(parsed_response, dict) and "risks" in parsed_response and isinstance(parsed_response["risks"], list):
                 found_risks = parsed_response["risks"]
                 logger.info(f"Risk analysis complete. Found {len(found_risks)} potential risks.")
                 return found_risks
             else:
                 logger.warning("LLM response had invalid structure. Expected a dict with a 'risks' list.")
-                return [] # Return empty list on structure mismatch
+                return [] 
 
         except (json.JSONDecodeError, ValueError) as e:
             logger.error(f"Failed to parse JSON from LLM response for risk analysis: {e}")
             logger.debug(f"Raw response was: {response.text}")
-            return [] # Return empty list on parsing failure (Option A)
+            return [] 
         except Exception as e:
             logger.error(f"An unexpected error occurred during risk analysis: {e}")
             return []
@@ -98,11 +93,8 @@ You are an expert legal document analyst. Your task is to analyze the provided d
         """
         logger.info("Starting single-call summarization process...")
 
-        # Stage 1: Simple safety limit. We will build the advanced fallback later.
-        # A 300,000 character limit is a safe proxy for a ~100k token window.
         if len(text) > 300000:
             logger.warning(f"Document with {len(text)} characters exceeds the simple summarizer limit.")
-            # This is where we will later add the advanced, token-aware fallback logic.
             return "Error: This document is too large for the standard summarizer. Advanced summarization is not yet implemented."
 
         prompt = f"""
@@ -133,7 +125,6 @@ You are an expert legal analyst. Your task is to provide a clear and effective s
 
     
     def __init__(self, model_name: str = "gemini-2.0-flash"):
-        # Use a modern, capable model
         self.model_name = model_name
         self.system_prompt ="""You are an AI assistant designed to help users understand complex documents. Your role is to be a helpful and cautious guide.
 
@@ -158,7 +149,6 @@ You are an expert legal analyst. Your task is to provide a clear and effective s
         try:
             context = self.format_context(context_chunks)
             
-            # Log payload
             logger.info(f" Sending to LLM:")
             logger.info(f"  - Questions: {len(questions)}")
             logger.info(f"  - Context chunks: {len(context_chunks)}")
@@ -176,7 +166,6 @@ Please answer each question based only on the provided context chunks. Look for 
             
             logger.info("Prompt preview (first 500 chars): " + (user_message[:500] + "..." if len(user_message) > 500 else user_message))
             
-            # Call Gemini
             logger.info("Making Gemini API call...")
             model = genai.GenerativeModel(self.model_name)
             response = model.generate_content(f"{self.system_prompt}\n\n{user_message}")
@@ -204,7 +193,6 @@ Please answer each question based only on the provided context chunks. Look for 
     def parse_response(self, response_text: str, questions: List[str]) -> List[str]:
         """Parse LLM response with improved error handling"""
         try:
-            # Extract JSON (supporting code-block wrapping)
             json_match = re.search(r'```json\s*(\{.*?\})\s*```', response_text, re.DOTALL)
             if json_match:
                 json_str = json_match.group(1)
@@ -223,7 +211,6 @@ Please answer each question based only on the provided context chunks. Look for 
             if not isinstance(answers, list):
                 raise ValueError("'answers' must be a list")
             
-            # Pad/truncate to match question count
             while len(answers) < len(questions):
                 answers.append("Unable to find relevant information in the provided context.")
             return answers[:len(questions)]
@@ -258,3 +245,4 @@ Please answer each question based only on the provided context chunks. Look for 
             answers.append("Unable to process this question due to response parsing issues.")
         
         return answers[:len(questions)]
+
