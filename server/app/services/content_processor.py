@@ -58,9 +58,9 @@ class ContentProcessor:
             content_type = response.headers.get("content-type", "").lower()
             logger.info(f"Downloaded content with type: {content_type}")
             
-            # This is the crucial line that returns two values as a tuple
             return response.content, content_type
 
         except Exception as e:
             logger.error(f"Failed to download content: {e}")
+
             raise HTTPException(status_code=400, detail=f"Failed to process content from URL: {str(e)}")
