@@ -1,14 +1,13 @@
-# In app/services/vector_store.py
+
 
 from typing import List
 from app.utils.logger import logger
-# We no longer import the models from config
+
 
 class EnhancedHybridVectorStore:
     """Enhanced hybrid vector storage that receives initialized models."""
     
     def __init__(self, embedding_model, pinecone_index):
-        # Store the provided models as instance attributes
         self.embedding_model = embedding_model
         self.pinecone_index = pinecone_index
         self.namespace = "insurance_docs"
@@ -16,7 +15,6 @@ class EnhancedHybridVectorStore:
     def search(self, query: str, document_id: str, limit: int = 15) -> List[str]:
         """Primary Pinecone search with document filtering."""
         try:
-            # Use the instance's embedding model
             query_embedding = self.embedding_model.encode([query])[0]
             
             results = self.pinecone_index.query(
@@ -37,7 +35,6 @@ class EnhancedHybridVectorStore:
     def add_to_pinecone_fallback(self, chunks: List[str], document_id: str):
         """Add chunks to Pinecone with document_id in metadata."""
         try:
-            # Use the instance's embedding model
             embeddings = self.embedding_model.encode(chunks)
             batch_size = 20
             
@@ -64,6 +61,7 @@ class EnhancedHybridVectorStore:
             logger.info(f" Added {len(chunks)} chunks to Pinecone for document {document_id}")
         except Exception as e:
             logger.error(f" Failed to add to Pinecone fallback: {e}")
-            # Re-raise the exception to be caught by the endpoint
+           
 
             raise e
+
