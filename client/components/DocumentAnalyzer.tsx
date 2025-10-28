@@ -36,7 +36,7 @@ export default function DocumentAnalyzer() {
     setIsUploading(true)
     try {
       // const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-      const response = await fetch("/api/upload", {
+      const response = await fetch("/api/v1/upload", {
         method: "POST",
         body: formData,
       })
