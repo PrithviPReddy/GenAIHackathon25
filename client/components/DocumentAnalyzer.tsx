@@ -35,11 +35,11 @@ export default function DocumentAnalyzer() {
   const handleUpload = async (formData: FormData) => {
     setIsUploading(true)
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-      const response = await fetch("`${baseUrl}/api/upload", {
-        method: "POST",
-        body: formData,
-      })
+      // const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      })
 
       const data = await response.json()
 
@@ -78,8 +78,8 @@ export default function DocumentAnalyzer() {
     setIsProcessing(true)
     try {
       const questionList = questions.split("\n").filter((q) => q.trim() !== "")
-      const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-      const response = await fetch("`${baseUrl}/api/questions", {
+      // const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+      const response = await fetch("/api/questions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ questions: questionList }),
@@ -104,7 +104,7 @@ export default function DocumentAnalyzer() {
     setIsProcessing(true)
     try {
       const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-      const response = await fetch("`${baseUrl}/api/summarize", {
+      const response = await fetch("/api/summarize", {
         method: "POST",
       })
 
@@ -127,7 +127,7 @@ export default function DocumentAnalyzer() {
     setIsProcessing(true)
     try {
       const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-      const response = await fetch("`${baseUrl}/api/analyze-risks", {
+      const response = await fetch("/api/analyze-risks", {
         method: "POST",
       })
 
