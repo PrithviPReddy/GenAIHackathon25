@@ -14,7 +14,7 @@ class ImprovedLLMProcessor:
         using a single API call.
         """
         logger.info("Starting single-call risk analysis...")
-l
+
         single_call_prompt = f"""
 You are an expert legal document analyst. Your task is to analyze the provided document text and identify any clauses that fall into the specific risk categories listed below.
 
@@ -245,4 +245,5 @@ Please answer each question based only on the provided context chunks. Look for 
             answers.append("Unable to process this question due to response parsing issues.")
         
         return answers[:len(questions)]
+
 
